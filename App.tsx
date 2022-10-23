@@ -1,5 +1,6 @@
 import React from "react";
 import { ThemeProvider } from "styled-components";
+import { StatusBar } from "expo-status-bar";
 import AppLoading from "expo-app-loading";
 import {
   useFonts,
@@ -9,8 +10,8 @@ import {
 } from "@expo-google-fonts/poppins";
 
 import theme from "./src/global/styles/theme";
-import Dashboard from "./src/screens/Dashboard";
-import { StatusBar } from "expo-status-bar";
+import { Register } from "./src/screens/Register";
+import { Dashboard } from "./src/screens/Dashboard";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -27,7 +28,7 @@ export default function App() {
     <>
       <StatusBar style="light" />
       <ThemeProvider theme={theme}>
-        <Dashboard />
+        <Register />
       </ThemeProvider>
     </>
   );
