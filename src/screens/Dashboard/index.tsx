@@ -15,6 +15,7 @@ import {
   UserGreeting,
   UserInfo,
   UserName,
+  LogoutButton,
   Icon,
   HighlighCards,
   Transactions,
@@ -68,7 +69,13 @@ export function Dashboard() {
               <UserName>Naldo</UserName>
             </User>
           </UserInfo>
-          <Icon name="power" />
+          <LogoutButton
+            onPress={() => {
+              console.log("logout");
+            }}
+          >
+            <Icon name="power" />
+          </LogoutButton>
         </UserWrapper>
       </Header>
       <HighlighCards horizontal showsHorizontalScrollIndicator={false}>
