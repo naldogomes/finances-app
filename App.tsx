@@ -1,4 +1,7 @@
 import React from "react";
+
+import "intl";
+import "intl/locale-data/jsonp/pt-BR";
 import { ThemeProvider } from "styled-components";
 import { StatusBar } from "expo-status-bar";
 import AppLoading from "expo-app-loading";
