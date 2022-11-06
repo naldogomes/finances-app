@@ -46,7 +46,6 @@ interface CategoryData {
 }
 
 export function Resume() {
-  const [isLoading, setIsLoading] = useState(true);
   const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>(
     []
   );
@@ -65,7 +64,6 @@ export function Resume() {
   };
 
   const loadDate = async () => {
-    setIsLoading(true);
     const dataKey = `gofinances:transactions_user:${user.id}`;
     const response = await AsyncStorage.getItem(dataKey);
     const responseFormatted = response ? JSON.parse(response) : [];
@@ -114,7 +112,6 @@ export function Resume() {
     });
 
     setTotalByCategories(totalByCategory);
-    setIsLoading(false);
   };
 
   useFocusEffect(
@@ -148,46 +145,38 @@ export function Resume() {
           <MonthSelectIcon name="chevron-right" />
         </MonthSelectButton>
       </MonthSelect>
-      {isLoading ? (
-        <LoadingContainer>
-          <ActivityIndicator color={theme.colors.primary} size="large" />
-        </LoadingContainer>
-      ) : (
-        <>
-          <Content
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              paddingHorizontal: 24,
-              paddingBotttom: useBottomTabBarHeight(),
+      <Content
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingHorizontal: 24,
+          paddingBotttom: useBottomTabBarHeight(),
+        }}
+      >
+        <ChartContainer>
+          <VictoryPie
+            data={totalByCategories}
+            x="percent"
+            y="total"
+            colorScale={totalByCategories.map((category) => category.color)}
+            style={{
+              labels: {
+                fontSize: RFValue(18),
+                fontWeight: "bold",
+                fill: theme.colors.shape,
+              },
             }}
-          >
-            <ChartContainer>
-              <VictoryPie
-                data={totalByCategories}
-                x="percent"
-                y="total"
-                colorScale={totalByCategories.map((category) => category.color)}
-                style={{
-                  labels: {
-                    fontSize: RFValue(18),
-                    fontWeight: "bold",
-                    fill: theme.colors.shape,
-                  },
-                }}
-                labelRadius={80}
-              />
-            </ChartContainer>
-            {totalByCategories.map((item) => (
-              <HistoryCard
-                key={item.key}
-                title={item.name}
-                amount={item.totalFormatted}
-                color={item.color}
-              />
-            ))}
-          </Content>
-        </>
-      )}
+            labelRadius={80}
+          />
+        </ChartContainer>
+        {totalByCategories.map((item) => (
+          <HistoryCard
+            key={item.key}
+            title={item.name}
+            amount={item.totalFormatted}
+            color={item.color}
+          />
+        ))}
+      </Content>
     </Container>
   );
 }
