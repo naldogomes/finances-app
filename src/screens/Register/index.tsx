@@ -5,6 +5,7 @@ import uuid from "react-native-uuid";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 
+import { useAuth } from "../../hooks/auth";
 import { useNavigation } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
 
@@ -40,9 +41,9 @@ export function Register() {
   const [transactionType, setTransactionType] = useState("");
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
 
-  const navigation = useNavigation();
+  const { user } = useAuth();
 
-  const dataKey = "gofinances:transactions";
+  const navigation = useNavigation();
 
   const {
     control,
@@ -78,6 +79,7 @@ export function Register() {
     };
 
     try {
+      const dataKey = `gofinances:transactions_user:${user.id}`;
       const data = await AsyncStorage.getItem(dataKey);
       const currentDate = data ? JSON.parse(data) : [];
 

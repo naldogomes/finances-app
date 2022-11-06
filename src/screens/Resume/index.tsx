@@ -7,6 +7,7 @@ import { RFValue } from "react-native-responsive-fontsize";
 import { addMonths, subMonths, format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
+import { useAuth } from "../../hooks/auth";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useTheme } from "styled-components";
 
@@ -45,14 +46,15 @@ interface CategoryData {
 }
 
 export function Resume() {
-  const dataKey = "gofinances:transactions";
-  const theme = useTheme();
-
   const [isLoading, setIsLoading] = useState(true);
   const [totalByCategories, setTotalByCategories] = useState<CategoryData[]>(
     []
   );
+
   const [selectedDate, setSelectedDate] = useState(new Date());
+
+  const { user } = useAuth();
+  const theme = useTheme();
 
   const handlechangeDate = (action: "next" | "prev") => {
     if (action === "next") {
@@ -64,6 +66,7 @@ export function Resume() {
 
   const loadDate = async () => {
     setIsLoading(true);
+    const dataKey = `gofinances:transactions_user:${user.id}`;
     const response = await AsyncStorage.getItem(dataKey);
     const responseFormatted = response ? JSON.parse(response) : [];
 
@@ -171,7 +174,7 @@ export function Resume() {
                     fill: theme.colors.shape,
                   },
                 }}
-                labelRadius={60}
+                labelRadius={80}
               />
             </ChartContainer>
             {totalByCategories.map((item) => (
